@@ -6,7 +6,6 @@ import com.lambdaschool.restaurants.model.RestaurantPayments;
 import com.lambdaschool.restaurants.repos.PaymentRepository;
 import com.lambdaschool.restaurants.repos.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +25,10 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
-    public List<Restaurant> findAll(Pageable pageable)
+    public List<Restaurant> findAll()
     {
         List<Restaurant> list = new ArrayList<>();
-        restrepos.findAll(pageable).iterator().forEachRemaining(list::add);
+        restrepos.findAll().iterator().forEachRemaining(list::add);
         return list;
     }
 
@@ -51,15 +50,6 @@ public class RestaurantServiceImpl implements RestaurantService
         }
 
         return restaurant;
-    }
-
-
-    @Override
-    public List<Restaurant> findRestaurantByNameLike(String name, Pageable pageable)
-    {
-        List<Restaurant> list = new ArrayList<>();
-        restrepos.findByNameContaining(name, pageable).iterator().forEachRemaining(list::add);
-        return list;
     }
 
     @Override
