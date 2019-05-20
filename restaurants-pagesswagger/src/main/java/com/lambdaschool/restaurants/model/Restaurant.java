@@ -1,6 +1,8 @@
 package com.lambdaschool.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,14 +10,17 @@ import java.util.List;
 
 // Restaurant is considered the parent entity of all - the Grand Poobah!
 
+@ApiModel(value = "Restaurant", description = "The Restaurant Entity")
 @Entity
 @Table(name = "restaurant")
 public class Restaurant extends Auditable
 {
+    @ApiModelProperty(name = "restaurantid", value = "primary key for Restaurant", required = true, example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long restaurantid;
 
+    @ApiModelProperty(name = "name", value = "Restaurant Name", required = true, example = "Some Name")
     @Column(unique = true,
             nullable = false)
     private String name;
