@@ -5,10 +5,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 // Restaurant is considered the parent entity of all - the Grand Poobah!
+// https://www.baeldung.com/javax-validation
 
 @ApiModel(value = "Restaurant", description = "The Restaurant Entity")
 @Entity
@@ -27,7 +31,14 @@ public class Restaurant extends Auditable
 
     private String address;
     private String city;
+
+    @Size(min = 2, max = 2, message = "State is the two character state abbreviation")
     private String state;
+
+    @Email(message = "Email should be valid username@domain.toplevel")
+    private String ourEmail;
+
+    @Pattern(regexp="\\d{3}-\\d{3}-\\d{4}", message = "Telephone is only numbers")
     private String telephone;
 
     @OneToMany(mappedBy = "restaurant",
