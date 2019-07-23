@@ -24,8 +24,7 @@ public class Swagger2Config
                 .select()
                 .apis(RequestHandlerSelectors
                         .basePackage("com.lambdaschool.restaurants"))
-                .paths(PathSelectors.regex("/.*"))
-                .build()
+                .paths(PathSelectors.any()).build()
                 .useDefaultResponseMessages(false) // Allows only my exception responses
                 .ignoredParameterTypes(Pageable.class) // allows only my paging parameter list
                 .apiInfo(apiEndPointsInfo());

@@ -11,8 +11,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,6 +50,18 @@ public class RestaurantController
         return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/allrestaurants")
+    public ResponseEntity<?> reallyListAllRestaurants()
+    {
+        List<Restaurant> myRestaurants = restaurantService.findAll(Pageable.unpaged());
+        return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value = "Retrieves a restaurant who has the given phrase in its name.", response = Restaurant.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Restaurant(s) Found", responseContainer = "List", response = Restaurant.class),
+            @ApiResponse(code = 404, message = "Restaurant Not Found", response = ErrorDetail.class)})
     @GetMapping(value = "/restaurant/namelike/{name}",
                 produces = {"application/json"})
     public ResponseEntity<?> getRestaurantByNameContaining(
@@ -60,7 +74,7 @@ public class RestaurantController
 
     @ApiOperation(value = "Retrieves a restaurant associated with the restaurantid.", response = Restaurant.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Restaurant Found", response = Restaurant.class),
+            @ApiResponse(code = 200, message = "Restaurant Found", response = Restaurant.class),
             @ApiResponse(code = 404, message = "Restaurant Not Found", response = ErrorDetail.class)})
     @GetMapping(value = "/restaurant/{restaurantId}",
                 produces = {"application/json"})
@@ -125,6 +139,18 @@ public class RestaurantController
     {
         restaurantService.delete(restaurantid);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // localhost:2019/restaurants/restauranttable
+    @GetMapping(value = "/restauranttable")
+    public ModelAndView displayRestaurantTable(HttpServletRequest request)
+    {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("restaurants");
+        List<Restaurant> myRestaurants = restaurantService.findAll(Pageable.unpaged());
+        mav.addObject("restaurantList", myRestaurants);
+
+        return mav;
     }
 }
 
