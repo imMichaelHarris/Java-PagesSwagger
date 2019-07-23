@@ -1,1 +1,1 @@
-# java-pages-redis-swagger
+# java-pages-swagger
